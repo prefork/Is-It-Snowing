@@ -60,17 +60,17 @@ a:hover {color: #000; text-decoration: underline;}
 a:visited {color: #000; text-decoration: none;}
 </style>
 <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-16614193-1']);
-  _gaq.push(['_trackPageview']);
-
+  var _gauges = _gauges || [];
   (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '50d0efff613f5d08de000001');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
   })();
-
 </script>
 	<meta name="DC.format" content="text/html" />
 	<meta name="DC.language" content="en" />
@@ -87,10 +87,10 @@ a:visited {color: #000; text-decoration: none;}
 		<div id="snowContainer">
 		</div>
 		<div id="footer">
-			<p>Created by <a href="http://grapepudding.com">Nate</a>. | <a href="https://github.com/rdnck76/Is-It-Snowing">Fork this</a> | <a href="http://twitter.com/rdnck76">Follow me on Twitter</a> | <a href="http://creativecommons.org/licenses/by/3.0/">CC 3.0</a></p>
+			<p>Created by <a href="https://twitter.com/natebenes">Nate</a>. | <a href="https://github.com/natebenes/Is-It-Snowing">Fork this</a> | <a href="http://creativecommons.org/licenses/by/3.0/">CC 3.0</a></p>
 		</div>
 	</div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
   $("form#mf-url-form").submit(function() {
@@ -99,13 +99,11 @@ $(document).ready(function() {
 	
 	var url = escape($("#mf-url").val());	
 	
-	$.getJSON("http://snow-grapepudding.apigee.com/v1/public/yql?q=select%20item.condition%0Afrom%20weather.forecast%20%0Awhere%20location%20in%20(%0A%20%20%20%20select%20postal%20%0A%20%20%20%20from%20geo.placefinder%0A%20%20%20%20where%20text%3D%22"+url+"%22%0A%20%20%20%20limit%201%0A)&format=json&callback=?",
+	$.getJSON("//query.yahooapis.com/v1/public/yql?q=select%20item.condition%0Afrom%20weather.forecast%20%0Awhere%20location%20in%20(%0A%20%20%20%20select%20postal%20%0A%20%20%20%20from%20geo.placefinder%0A%20%20%20%20where%20text%3D%22"+url+"%22%0A%20%20%20%20limit%201%0A)&format=json&callback=?",
 	function(data){
 		if(data.query.results != null){
 		$(data.query.results.channel.item.condition).each(function(condition){
-			var test = this.text;
-			test2 = test.toLowerCase();
-			if(test2.indexOf("snow") != -1){
+			if(this.text.toLowerCase().indexOf("snow") != -1){
 				// Check for no results
 				$("#snowContainer").text("Yup! :)");
 			}
